@@ -1,6 +1,6 @@
-const crypto = require("crypto")
 const jwt = require("jsonwebtoken")
-const userModel = require("../models/users.models")
+const userModel = require("../models/user.models")
+const bcrypt = require("bcryptjs")
 
 async function registerController(req, res) {
     try{
@@ -18,7 +18,7 @@ async function registerController(req, res) {
             return res.status(409).json({ message: "User already exists with " + (existingUser.email === email ? "this email" : "this userName") });
         }
         // Hash password
-        const hashedPassword = crypto.createHash("sha256").update(password).digest("hex");
+        const hashedPassword = await bcrypt.hash(password,10);
         // Create user in database
         const newUser = await userModel.create({ userName, email, password: hashedPassword,bio,profilePicture });
         //generating a token and saving it to the cookie storage
@@ -54,30 +54,31 @@ async function loginController(req, res) {
             $or : [{userName : userName}, {email : email}]
         })
 
+
         if(!userExist){
             return res.status(404).json({
                 message : "user does not exist with this " + (userName ? "user name" : "email address")
             })
         }
-        const hash = crypto.createHash("sha256").update(password).digest("hex");
-        if(hash !== userExist.password){
-            return ses.status(401).json({
+        const isValidPassword = await bcrypt.compare(password,userExist.password); 
+        if(! isValidPassword){
+            return res.status(401).json({
                 message : "invalid password"
             })
         }
 
         const token = jwt.sign({
             id : userExist._id
-        },process.env.JWT_SECRET,{expiresIn:"1 day"})
+        },process.env.JWT_SECRET,{expiresIn:"1 day"}) 
 
         res.cookie("token",token)
         res.status(200).json({
             message: "user loggin successfully",
             user :{
-                username : userExist.username,
+                username : userExist.userName,
                 email : userExist.email,
                 bio : userExist.bio,
-                profilePic : userExist.profilePic
+                profilePic : userExist.profilePicture
 
             }
         })
