@@ -5,5 +5,7 @@ const authMiddleware = require("../middlewares/auth.middleware");
 
 
 userRouter.post("/follow/:followeeName",authMiddleware,followUserController);
-userRouter.post("/unfollow/:followeeName",authMiddleware,unFollowUserController)
+userRouter.post("/unfollow/:followeeName",authMiddleware,unFollowUserController);
+
+
 module.exports = userRouter

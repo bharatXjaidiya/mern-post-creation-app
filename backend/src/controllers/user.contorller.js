@@ -2,6 +2,7 @@ const userModel = require("../models/user.models")
 const followModel = require("../models/follow.model")
 
 
+
 async function followUserController(req, res) {
 
     const followerName = req.userName;
@@ -38,14 +39,14 @@ async function followUserController(req, res) {
 
 
 
-    const newFollow = await followModel.create({
+    const followRecord = await followModel.create({
         follower: followerName,
         followee: followeeName
     })
 
     res.status(201).json({
         message: "followed successfully",
-        newFollow
+        followRecord
     })
 }
 
@@ -71,7 +72,8 @@ async function unFollowUserController(req,res){
     })
 }
 
+
 module.exports = {
     followUserController,
-    unFollowUserController
+    unFollowUserController,
 }
