@@ -7,6 +7,6 @@ authRouter.post("/register",authController.registerController)
 
 authRouter.post("/login", authController.loginController)
 
-authRouter.post("/getMe",authMiddleware,authController.getMeController)
+authRouter.get("/getMe",authMiddleware,authController.getMeController)
 
 module.exports = authRouter
