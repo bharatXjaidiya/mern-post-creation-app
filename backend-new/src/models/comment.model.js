@@ -15,7 +15,7 @@ const commentSchema = new mongoose.Schema({
         ref : "users",
         required : [true , "user id is required"]
     }
-})
+},{timestamp : true})
 
 commentSchema.index({postId : 1 , userId : 1},{unique : true});
 
