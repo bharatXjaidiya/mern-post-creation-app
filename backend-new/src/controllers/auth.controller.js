@@ -2,13 +2,12 @@ const userModel = require("../models/user.model")
 const bcrypt = require("bcryptjs");
 const jwt = require('jsonwebtoken');
 
-async function register(req, res) {
+async function registerController(req, res) {
     const { name, email, password, bio, profilePic } = req.body;
 
     if (!name || !email || !password) {
         return res.status(400).json({ message: "Please enter all the required fields." })
     }
-
 
     const isExist = await userModel.findOne({
         $or: [{ email }, { name }]
@@ -34,7 +33,7 @@ async function register(req, res) {
     })
 }
 
-async function login(req, res) {
+async function loginController(req, res) {
     const { name, email, password } = req.body;
 
     if (!password && !(name || email)) {
@@ -72,28 +71,19 @@ async function login(req, res) {
     res.status(200).json({ message: "user logdin successfully", user: { name: isExist.name, email: isExist.email, bio: isExist.bio, profilePic: isExist.profilePic } });
 }
 
-const getMe = async (req, res) => {
-    const token = req.cookies.token;
-    if (!token) {
-        return res.status(401).json({ message: "unautharized access" })
-    }
+const getMeController = async (req, res) => {
+    const userId = req.userId
 
-    const decode = jwt.verify(token, process.env.JWT_SECRET)
-
-    const user = await userModel.findById(decode.id).select("-password");
+    const user = await userModel.findById(userId).select("-password");
 
     res.status(200).json({ message: "user fetched successfully", user })
 
 }
 
 
-const logout = async (req, res) => {
-    const token = req.cookies.token;
-    if (!token) {
-        return res.status(404).json({ meassage: "user is not login" })
-    }
+const logoutController = async (req, res) => {
     res.clearCookie("token");
     res.status(200).json("user logout")
 }
 
-module.exports = { register, login, getMe, logout }
+module.exports = { registerController, loginController, getMeController, logoutController}
