@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require('jsonwebtoken');
 
 async function registerController(req, res) {
-    const { name, email, password, bio, } = req.body;
+    const { name, email, password} = req.body;
 
     if (!name || !email || !password) {
         return res.status(400).json({ message: "Please enter all the required fields." })
@@ -20,7 +20,7 @@ async function registerController(req, res) {
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(password, salt);
 
-    const user = await userModel.create({ name, email, password: hash, bio });
+    const user = await userModel.create({ name, email, password: hash});
 
     res.status(201).json({
         message: "User registered successfully.",

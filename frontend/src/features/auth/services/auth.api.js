@@ -5,7 +5,7 @@ const api = axios.create({
     withCredentials : true //able to read the tokens form the cookies
 })
 
-export const register = async(name,email,password) =>{
+export const register= async(name,email,password) =>{
     const response = await api.post("/register",{name,email,password});
 
     return response.data;
@@ -13,7 +13,7 @@ export const register = async(name,email,password) =>{
 
 export async function login(name,email,password){
     const response = await api.post("/login",{name,email,password})
-
+    
     return response.data;
 }
 
