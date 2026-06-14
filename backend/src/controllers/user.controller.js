@@ -58,4 +58,10 @@ const unFollowController = async (req, res) => {
     res.status(200).json({ message: "Successfully unfollowed " + followee.name })
 }
 
-module.exports = { followController, unFollowController }
+const getAllUsersController = async (req,res) =>{
+    const allUsers = await userModel.find().select("-password");
+    res.status(201).json({message : "All users fetched successfully" , users : allUsers})
+
+}
+
+module.exports = { followController, unFollowController ,getAllUsersController}

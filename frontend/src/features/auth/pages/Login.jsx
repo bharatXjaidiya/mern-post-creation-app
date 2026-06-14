@@ -29,21 +29,28 @@ const Login = () => {
         navigate('/')
     }
 
+    if (loading) {
+        return <h1>Loading...</h1>
+    }
+
     return (
         <main id='login' >
             <form onSubmit={(e) => { submit(e) }} >
                 <h1>Login</h1>
+
                 {loginWith === "username" ? <input onChange={(e) => { handleChange(e) }} type="text" name='username' id='username' placeholder='Enter username' value={username} /> : <input onChange={(e) => { handleChange(e) }} type="text" name='email' id='email' placeholder='Enter email' value={email} />}
 
                 <input onChange={(e) => { handleChange(e) }} type="text" name='password' id='password' placeholder='Enter password' value={password} />
 
                 <button>Login</button>
+
                 <p onClick={() => { loginWith === "username" ? setLoginWith("email") : setLoginWith("username") }} className='login-with'>Login with {loginWith === "username" ? "email" : "username"}</p>
+
                 <div className="form-bottom">
                     <p>Don't have an account?</p> <Link to={'/register'}>Register</Link>
                 </div>
-            </form>
 
+            </form>
         </main>
     )
 }

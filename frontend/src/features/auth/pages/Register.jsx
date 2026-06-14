@@ -29,6 +29,9 @@ const Register = () => {
 
   }
 
+  if(loading){
+    return <h1>Loading...</h1>
+  }
 
   return (
     <main id='register' >

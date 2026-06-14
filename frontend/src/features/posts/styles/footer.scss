@@ -1,0 +1,26 @@
+@use "../../../shared/global.scss" as *;
+.footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 25px;
+
+    .home,
+    .search,
+    .create,
+    .message,
+    .profile {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .icon {
+        font-size: 2rem;
+        cursor: pointer;
+    }
+
+    .create-icon{
+        fill: $accent-color;
+    }
+}

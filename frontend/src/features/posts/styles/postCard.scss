@@ -1,0 +1,87 @@
+@use "../../../shared/global.scss" as *;
+
+.post {
+    width: 97%;
+    min-height: 450px;
+    max-height: 500px;
+    position: relative;
+    border: 2px solid $accent-color;
+    border-radius: 20px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+
+    .post-bottom {
+        width: 100%;
+        position: absolute;
+        bottom: 0px;
+        left: 0px;
+        padding-inline: 10px;
+        background: linear-gradient(to top,
+                black 0%,
+                transparent 100%);
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+        padding: 10px;
+
+
+        .post-bottom-top {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+
+            img {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+
+            .username {
+                font-size: 20px;
+                font-weight: 600;
+            }
+        }
+
+        .post-bottom-bottom {
+            display: flex;
+            flex-direction: column;
+
+            .caption {
+                font-size: 1rem;
+                font-weight: 500;
+            }
+        }
+    }
+
+    .post-right {
+
+        height: 100%;
+        position: absolute;
+        bottom: 0px;
+        right: 0px;
+        display: flex;
+        flex-direction: column;
+        justify-content: end;
+        padding-bottom: 20px;
+        padding-right: 10px;
+
+        .like,
+        .comment,
+        .share {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .like-icon,
+        .comment-icon,
+        .share-icon {
+            font-size: 1.5rem;
+            object-fit: cover;
+        }
+
+    }
+}

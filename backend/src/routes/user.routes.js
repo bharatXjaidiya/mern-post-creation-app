@@ -1,10 +1,11 @@
 const express = require("express");
 const authMiddleware = require("../middleware/auth.middleware");
-const { followController, unFollowController } = require("../controllers/user.controller");
+const { followController, unFollowController , getAllUsersController} = require("../controllers/user.controller");
 
 const userRouter = express();
 
 userRouter.post("/follow/:followeeId", authMiddleware, followController);
-userRouter.delete("/unfollow/:followeeId", authMiddleware, unFollowController)
+userRouter.delete("/unfollow/:followeeId", authMiddleware, unFollowController);
+userRouter.get("/getAllUsers",getAllUsersController);
 
 module.exports = userRouter;

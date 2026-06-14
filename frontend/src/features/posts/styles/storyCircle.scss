@@ -1,0 +1,27 @@
+@use "../../../shared/global.scss" as *;
+
+.story{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+    
+    .circle{
+        padding: 3px;
+        border: 2px solid $accent-color;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+
+        img{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            background-color: $secondary-color;
+        }
+
+        
+    }
+}
