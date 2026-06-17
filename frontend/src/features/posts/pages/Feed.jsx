@@ -18,7 +18,7 @@ const Feed = () => {
 
 
     if (loading) {
-        return <h1>Loading....</h1>
+        return <h1>Feed is Loading....</h1>
     }
 
     return (
@@ -37,7 +37,7 @@ const Feed = () => {
                 {
                     allPostList?.length > 0
                         ? allPostList.map((post) => (
-                            <PostCard key={post._id} imageUrl={post.imageUrl} caption={post.caption} description = {post.description} likeCount = {post.likeCount} commentCount={post.commentCount} />
+                            <PostCard key={post._id} postId = {post._id} user = {post.userId} imageUrl={post.imageUrl} caption={post.caption} description = {post.description} likeCount = {post.likeCount} commentCount={post.commentCount} isLiked = {post.isLiked} />
                         ))
                         : <h1>No post available now</h1>
                 }

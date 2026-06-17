@@ -3,6 +3,7 @@ const likeModel = require("../models/like.model")
 const jwt = require("jsonwebtoken");
 const ImageKit = require("imagekit");
 const commentModel = require("../models/comment.model");
+const { getAllLikes } = require("../../../frontend/src/features/posts/services/post.api");
 
 
 const imageKit = new ImageKit({
@@ -54,7 +55,20 @@ const createPostController = async (req, res) => {
 }
 
 const getAllPostsController = async (req, res) => {
-    const posts = await postModel.find();
+    const userId = req.userId;
+
+    const posts = await Promise.all((await postModel.find().populate("userId").lean()).map(async (post) => {
+        const isLiked = await likeModel.findOne({
+            postId: post._id,
+            userId
+        })
+
+        post.isLiked = !!isLiked;
+        return post
+    }));
+
+
+
     res.status(200).json({ message: "All posts fetched successfully.", posts })
 }
 
@@ -113,7 +127,26 @@ const likePostController = async (req, res) => {
     await likeModel.create({ userId, postId });
     await postModel.findByIdAndUpdate(postId, { $inc: { likeCount: 1 } })
 
-    res.status(200).json({ meassage: "Post liked" })
+    res.status(200).json({ message: "Post liked", likeCount: postModel.likeCount })
+
+}
+
+const getAllLikesController = async (req,res) => {
+
+    const postId = req.params.postId;
+
+    const post = await postModel.findById(postId);
+
+    if (!post) {
+        return res.status(404).json({
+            message: "Post doesn't exist"
+        })
+    }
+
+    const allLikes = await likeModel.find({ postId }).populate("userId");
+
+    res.status(200).json({message : "All likes list fetched successfully" , allLikes})
+
 
 }
 
@@ -169,10 +202,10 @@ const deletePostController = async (req, res) => {
         await commentModel.deleteMany({ postId });
 
         res.status(200).json({ message: "Post deleted successfully" })
-        
+
     } catch (err) {
         console.log(err);
         res.status(500).json({ message: err.message });
     }
 }
-module.exports = { createPostController, getAllPostsController, getPostController, getPostDetailController, likePostController, commentPostController, deletePostController }
+module.exports = { createPostController, getAllPostsController, getPostController, getPostDetailController, likePostController, commentPostController, deletePostController ,getAllLikesController }

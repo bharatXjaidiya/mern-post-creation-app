@@ -6,6 +6,6 @@ const userRouter = express();
 
 userRouter.post("/follow/:followeeId", authMiddleware, followController);
 userRouter.delete("/unfollow/:followeeId", authMiddleware, unFollowController);
-userRouter.get("/getAllUsers",getAllUsersController);
+userRouter.get("/getAllUsers",authMiddleware,getAllUsersController);
 
 module.exports = userRouter;

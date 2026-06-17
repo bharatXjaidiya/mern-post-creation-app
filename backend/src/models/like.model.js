@@ -12,7 +12,7 @@ const likeSchema = new mongoose.Schema({
         ref : "users",
         required : true
     }
-},{timestamp : true})
+},{timestamps : true})
 
 likeSchema.index({postId : 1, userId : 1},{unique : true})
 

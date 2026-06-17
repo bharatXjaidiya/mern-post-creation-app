@@ -43,7 +43,7 @@ async function loginController(req, res) {
 
     const isExist = await userModel.findOne({
         $or: [{ name }, { email }]
-    })
+    }).select("+password")
 
     if (!isExist) {
         return res.status(404).json({ message: "User dosn't exist." })
@@ -75,7 +75,7 @@ async function loginController(req, res) {
 const getMeController = async (req, res) => {
     const userId = req.userId
 
-    const user = await userModel.findById(userId).select("-password");
+    const user = await userModel.findById(userId);
 
     res.status(200).json({ message: "user fetched successfully", user })
 
