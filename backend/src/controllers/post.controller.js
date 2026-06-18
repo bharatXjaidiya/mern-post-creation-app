@@ -156,6 +156,7 @@ const commentPostController = async (req, res) => {
     const { comment } = req.body;
     const post = await postModel.findById(postId)
 
+
     if (!post) {
         return res.status(404).json({
             message: "post doesn't exist"
@@ -168,10 +169,65 @@ const commentPostController = async (req, res) => {
         comment
     })
 
+    await result.populate("userId")
+
     await postModel.findByIdAndUpdate(postId, { $inc: { commentCount: 1 } })
 
     res.status(201).json({ message: "comment on post successfully", comment: result })
 }
+
+const getAllCommentsController = async(req,res)=>{
+    const postId = req.params.postId;
+
+    const post = await postModel.findById(postId);
+
+    console.log(post)
+   
+    if(!post) {
+        return res.status(404).json({message : "Post doesn't exist."})
+    }
+
+    const allComments = await commentModel.find({ postId }).populate("userId");
+
+    res.status(201).json({message : "All comments fetched successfully" , allComments});
+}
+
+const deleteCommentController = async (req, res) => {
+    try {
+        const { commentId } = req.params;
+        const userId = req.userId;
+
+        const comment = await commentModel.findById(commentId);
+
+        if (!comment) {
+            return res.status(404).json({
+                message: "Comment not found"
+            });
+        }
+
+        if (!comment.userId.equals(userId)) {
+            return res.status(403).json({
+                message: "Can't delete this comment."
+            });
+        }
+
+        await commentModel.findByIdAndDelete(commentId);
+
+        await postModel.findByIdAndUpdate(
+            comment.postId,
+            { $inc: { commentCount: -1 } }
+        );
+
+        return res.status(200).json({
+            message: "Comment deleted successfully"
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            message: "Internal server error"
+        });
+    }
+};
 
 const deletePostController = async (req, res) => {
     try {
@@ -208,4 +264,4 @@ const deletePostController = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 }
-module.exports = { createPostController, getAllPostsController, getPostController, getPostDetailController, likePostController, commentPostController, deletePostController ,getAllLikesController }
+module.exports = { createPostController, getAllPostsController, getPostController, getPostDetailController, likePostController, commentPostController, deletePostController ,getAllLikesController , getAllCommentsController ,deleteCommentController}

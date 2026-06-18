@@ -1,7 +1,7 @@
 import { useContext } from "react"
 import { PostContext } from "../post.context"
 import { getAllUsers } from "../services/user.api"
-import { getAllLikes, getAllPosts, likePost } from "../services/post.api"
+import { commentPost, deleteComment, getAllComments, getAllLikes, getAllPosts, likePost } from "../services/post.api"
 import { AuthContext } from "../../auth/auth.context"
 
 const usePost = () => {
@@ -36,8 +36,27 @@ const usePost = () => {
         return response.allLikes
     }
 
+    const handleCommentPost = async (postId,comment) =>{
+        const response = await commentPost(postId,comment);
+
+        return response.comment;
+    }
+
+    const handleGetAllComments = async (postId) =>{
+        const response = await getAllComments(postId);
+
+        return response.allComments;
+    }
+
+    const handleDeleteComment = async (commentId) =>{
+        const response = await deleteComment(commentId);
+
+        return response.message;
+    }
+
+
     return {
-        allUserList, allPostList, handleGetAllUsers, handleGetAllPosts , loading , user , handleLikePost , handleGetAllLikes
+        allUserList, allPostList, handleGetAllUsers, handleGetAllPosts , loading , user , handleLikePost , handleGetAllLikes ,handleGetAllComments , handleCommentPost , handleDeleteComment
     }
 }
 

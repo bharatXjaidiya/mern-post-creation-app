@@ -20,3 +20,21 @@ export const getAllLikes = async (postId) =>{
 
     return response.data;
 }
+
+export const commentPost = async (postId,comment) =>{
+    const response = await api.post("/post/comment/" + postId ,{comment});
+
+    return response.data;
+}
+
+export const getAllComments = async (postId) =>{
+    const response = await api.get("/post/getAllComments/" + postId);
+
+    return response.data;
+}
+
+export const deleteComment = async(commentId) =>{
+    const response = await api.delete("/post/comment/" + commentId);
+
+    return response
+}
