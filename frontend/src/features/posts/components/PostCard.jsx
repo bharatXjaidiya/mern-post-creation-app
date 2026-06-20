@@ -4,13 +4,13 @@ import { FaRegHeart } from "react-icons/fa";
 import { FaRegComment } from "react-icons/fa";
 import { IoShareOutline } from "react-icons/io5";
 import { AiOutlineDelete } from "react-icons/ai";
-import usePost from '../hooks/usePost';
+import usePostActions from '../hooks/usePostActions';
 
 
 const PostCard = ({ postId, imageUrl, user, caption, description, likeCount, commentCount, isLiked }) => {
 
-  const { handleLikePost, handleGetAllLikes, handleGetAllComments, handleCommentPost  , handleDeleteComment} = usePost();
-  const [Liked, setLiked] = useState(null)
+  const { handleLikePost, handleGetAllLikes, handleGetAllComments, handleCommentPost, handleDeleteComment } = usePostActions();
+  const [Liked, setLiked] = useState(isLiked)
   let [likedCount, setlikedCount] = useState(likeCount)
   const [showLikePopup, setShowLikePopup] = useState(false)
   const [likeList, setLikeList] = useState([])
@@ -20,9 +20,9 @@ const PostCard = ({ postId, imageUrl, user, caption, description, likeCount, com
   const [commentList, setCommentList] = useState([])
   const [commentedCount, setCommentedCount] = useState(commentCount)
 
-  useEffect(() => {
-    setLiked(isLiked)
-  }, [])
+  // useEffect(() => {
+  //   setLiked(isLiked)
+  // }, [])
 
 
   const onLikeHandle = async () => {
@@ -48,7 +48,7 @@ const PostCard = ({ postId, imageUrl, user, caption, description, likeCount, com
     e.preventDefault();
     await handleCommentPost(postId, comment)
     handleCommentPopup()
-    setCommentedCount(prev => prev+1)
+    setCommentedCount(prev => prev + 1)
   }
 
   const handleCommentPopup = async (e) => {
@@ -59,11 +59,11 @@ const PostCard = ({ postId, imageUrl, user, caption, description, likeCount, com
     setShowLikePopup(false)
   }
 
-  const handleDeleteCommentClick = async (commentId) =>{
+  const handleDeleteCommentClick = async (commentId) => {
     await handleDeleteComment(commentId);
     const response = await handleGetAllComments(postId);
     setCommentList(response)
-    setCommentedCount(prev => prev-1)
+    setCommentedCount(prev => prev - 1)
 
 
   }
@@ -123,7 +123,7 @@ const PostCard = ({ postId, imageUrl, user, caption, description, likeCount, com
         }}>X</button>
         <div className="all-comment-components">
           <p className="heading">Comments</p>
-          
+
           {
             commentList.length > 0 ?
               commentList.map((comment) => {
@@ -137,12 +137,12 @@ const PostCard = ({ postId, imageUrl, user, caption, description, likeCount, com
                       {comment.userId.name}
                     </p>
                     <div className="comment">
-                      {comment.comment} 
+                      {comment.comment}
                     </div>
                   </div>
 
                   <div className="comment-component-delete">
-                    <AiOutlineDelete onClick={()=>{handleDeleteCommentClick(comment._id)}} className='delete'/>
+                    <AiOutlineDelete onClick={() => { handleDeleteCommentClick(comment._id) }} className='delete' />
                   </div>
                 </div>)
               }) : <h3 className='comment-message'>No Comments Yet.</h3>

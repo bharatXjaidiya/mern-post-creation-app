@@ -11,12 +11,6 @@ import "../styles/feed.scss"
 const Feed = () => {
     const { allUserList, allPostList, handleGetAllUsers, handleGetAllPosts, loading, user } = usePost();
 
-    useEffect(() => {
-        handleGetAllUsers();
-        handleGetAllPosts();
-    }, []);
-
-    console.log(allPostList)
 
     if (loading) {
         return <h1>Feed is Loading....</h1>
