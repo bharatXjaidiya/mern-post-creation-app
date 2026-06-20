@@ -5,8 +5,11 @@ import { AiFillPlusCircle } from "react-icons/ai";
 import { AiOutlineMessage } from "react-icons/ai";
 import { CgProfile } from "react-icons/cg";
 import "../styles/footer.scss"
+import {useNavigate} from "react-router"
 
 const Footer = () => {
+
+  const navigate = useNavigate()
   return (
     <div className='footer'>
       <div className="home">
@@ -20,7 +23,7 @@ const Footer = () => {
       </div>
 
       <div className="create">
-        <AiFillPlusCircle className = "icon create-icon" />
+        <AiFillPlusCircle onClick={()=>{navigate('/create-post')}} className = "icon create-icon" />
         <p>create</p>
       </div>
 

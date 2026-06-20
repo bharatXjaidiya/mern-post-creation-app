@@ -38,3 +38,15 @@ export const deleteComment = async(commentId) =>{
 
     return response
 }
+
+export const createPost = async(caption,description,image) => {
+    const formData = new FormData();
+    formData.append("image",image);
+    formData.append("caption",caption);
+    formData.append("description",description);
+
+    const response = await api.post("/post/create",formData);
+
+    return response.data;
+
+}

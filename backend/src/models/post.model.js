@@ -8,7 +8,7 @@ const postSchema = new mongoose.Schema({
     description: { type: String, required: true },
     likeCount: { type: Number, default: 0 },
     commentCount: { type: Number, default: 0 }
-});
+},{timestamps : true});
 
 const postModel = mongoose.model("posts", postSchema)
 

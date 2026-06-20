@@ -4,7 +4,7 @@ const upload = require("../middleware/multer.middleware")
 const {createPostController,getAllPostsController, getPostController,getPostDetailController, likePostController, commentPostController, deletePostController, getAllLikesController, getAllCommentsController, deleteCommentController} = require("../controllers/post.controller")
 const authMiddleware = require("../middleware/auth.middleware");
 
-postRouter.post("/create",authMiddleware,upload.single("imageUrl"),createPostController);
+postRouter.post("/create",authMiddleware,upload.single("image"),createPostController);
 postRouter.get("/",authMiddleware,getAllPostsController);
 postRouter.get("/getPosts",authMiddleware,getPostController)
 postRouter.get("/detail/:postId",authMiddleware,getPostDetailController)

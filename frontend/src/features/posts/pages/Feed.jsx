@@ -16,6 +16,7 @@ const Feed = () => {
         handleGetAllPosts();
     }, []);
 
+    console.log(allPostList)
 
     if (loading) {
         return <h1>Feed is Loading....</h1>

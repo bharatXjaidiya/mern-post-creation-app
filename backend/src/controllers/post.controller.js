@@ -19,6 +19,7 @@ const createPostController = async (req, res) => {
             return res.status(400).json({ message: "no file uploaded" });
         }
 
+        const imageFile = req.file;
         const { caption, description } = req.body;
 
         if (!caption || !description) {
@@ -28,8 +29,8 @@ const createPostController = async (req, res) => {
         // upload to imagekit
         const result = await new Promise((resolve, reject) => {
             imageKit.upload({
-                file: req.file.buffer,
-                fileName: req.file.originalname,
+                file: imageFile.buffer,
+                fileName: imageFile.originalname,
                 folder: "/posts"
             }, (err, result) => {
                 if (err) reject(err);
@@ -57,7 +58,7 @@ const createPostController = async (req, res) => {
 const getAllPostsController = async (req, res) => {
     const userId = req.userId;
 
-    const posts = await Promise.all((await postModel.find().populate("userId").lean()).map(async (post) => {
+    const posts = await Promise.all((await postModel.find().populate("userId").sort({createdAt : -1}).lean()).map(async (post) => {
         const isLiked = await likeModel.findOne({
             postId: post._id,
             userId
@@ -66,9 +67,7 @@ const getAllPostsController = async (req, res) => {
         post.isLiked = !!isLiked;
         return post
     }));
-
-
-
+    
     res.status(200).json({ message: "All posts fetched successfully.", posts })
 }
 
