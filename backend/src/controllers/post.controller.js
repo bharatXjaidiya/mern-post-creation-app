@@ -70,10 +70,10 @@ const getAllPostsController = async (req, res) => {
     
     res.status(200).json({ message: "All posts fetched successfully.", posts })
 }
-
+ 
 const getPostController = async (req, res) => {
-    const userId = req.userId;
-    const posts = await postModel.find({ userId })
+    const userId = req.params.userId;
+    const posts = await postModel.find({ userId }).populate("userId")
 
     if (posts.length === 0) {
         return res.status(404).json({ message: "No posts created yet." })

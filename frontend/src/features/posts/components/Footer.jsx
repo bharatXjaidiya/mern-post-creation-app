@@ -32,7 +32,7 @@ const Footer = () => {
         <p>Message</p>
       </div>
 
-      <div className="profile">
+      <div onClick={()=>{navigate("/profile")}} className="profile">
         <CgProfile className = "icon" /> 
         <p>Profile</p>
       </div>

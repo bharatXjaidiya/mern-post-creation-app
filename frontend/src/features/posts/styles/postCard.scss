@@ -2,13 +2,13 @@
 
 .post {
     width: 97%;
-    min-height: 450px;
+    min-height: 350px;
     max-height: 500px;
     position: relative;
     border: 2px solid $accent-color;
     border-radius: 20px;
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size:contain;
     background-position: center;
     overflow: hidden;
 

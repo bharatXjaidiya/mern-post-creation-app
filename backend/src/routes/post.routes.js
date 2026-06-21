@@ -6,7 +6,7 @@ const authMiddleware = require("../middleware/auth.middleware");
 
 postRouter.post("/create",authMiddleware,upload.single("image"),createPostController);
 postRouter.get("/",authMiddleware,getAllPostsController);
-postRouter.get("/getPosts",authMiddleware,getPostController)
+postRouter.get("/getPosts/:userId",authMiddleware,getPostController)
 postRouter.get("/detail/:postId",authMiddleware,getPostDetailController)
 postRouter.get("/like/:postId",authMiddleware,likePostController)
 postRouter.get("/getAllLikes/:postId",authMiddleware,getAllLikesController)

@@ -74,7 +74,6 @@ async function loginController(req, res) {
 
 const getMeController = async (req, res) => {
     const userId = req.userId
-
     const user = await userModel.findById(userId);
 
     res.status(200).json({ message: "user fetched successfully", user })

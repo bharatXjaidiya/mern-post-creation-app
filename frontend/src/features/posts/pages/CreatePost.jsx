@@ -10,10 +10,10 @@ const CreatePost = () => {
   const { handleCreatePost } = usePost();
   const [caption, setCaption] = useState("");
   const [description, setDescription] = useState("");
-  const postImageInputFieldRef = useRef(null)
   const navigate = useNavigate();
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
+  const postImageInputFieldRef = useRef(null)
 
   function handleChange(e) {
     if (e.target.name === "caption") {
