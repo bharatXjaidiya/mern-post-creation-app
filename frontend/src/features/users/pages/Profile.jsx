@@ -56,11 +56,11 @@ const Profile = () => {
 
         <div className="section-4-bottom">
           {
-              userPostList?.length > 0
-                ? userPostList.map((post) => (
-                  <PostCard key={post._id} postId={post._id} user={post.userId} imageUrl={post.imageUrl} caption={post.caption} description={post.description} likeCount={post.likeCount} commentCount={post.commentCount} isLiked={post.isLiked} />
-                ))
-                : <h1>No post available now</h1>
+            userPostList?.length > 0
+              ? userPostList.map((post) => (
+                <PostCard key={post._id} postId={post._id} user={post.userId} imageUrl={post.imageUrl} caption={post.caption} description={post.description} likeCount={post.likeCount} commentCount={post.commentCount} isLiked={post.isLiked} />
+              ))
+              : <h1>No post available now</h1>
           }
         </div>
       </section>

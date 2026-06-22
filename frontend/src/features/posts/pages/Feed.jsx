@@ -10,7 +10,6 @@ import "../styles/feed.scss"
 
 const Feed = () => {
     const { allUserList, allPostList, handleGetAllUsers, handleGetAllPosts, loading, user } = usePost();
-    console.log(user)
 
     if (loading) {
         return <h1>Feed is Loading....</h1>
@@ -18,7 +17,7 @@ const Feed = () => {
 
     return (
         <main id="feed">
-            <Navbar />
+            <Navbar profilePic={user.profilePic}/>
 
             <div className="stories">
                 {allUserList?.length > 0

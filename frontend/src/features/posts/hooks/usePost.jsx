@@ -1,13 +1,12 @@
-import { useContext , useEffect } from "react"
+import { useContext, useEffect } from "react"
 import { PostContext } from "../post.context"
 import { getAllUsers } from "../services/user.api"
-import {createPost , getAllPosts } from "../services/post.api"
+import { createPost, getAllPosts } from "../services/post.api"
 import { AuthContext } from "../../auth/auth.context"
 
 const usePost = () => {
     const { loading, setLoading, allUserList, setAllUserList, allPostList, setAllPostList } = useContext(PostContext)
     const { user, setUser } = useContext(AuthContext)
-
 
     const handleGetAllUsers = async () => {
         setLoading(true)

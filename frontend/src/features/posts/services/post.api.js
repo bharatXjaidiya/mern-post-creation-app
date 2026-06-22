@@ -5,6 +5,7 @@ const api = axios.create({
     withCredentials :true
 })
 
+
 export const getAllPosts = async () => {
     const response = await api.get("post/");
     return response.data;

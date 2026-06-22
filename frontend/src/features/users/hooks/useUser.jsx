@@ -1,31 +1,23 @@
 import React, { useContext , useEffect } from 'react'
 import { UserContext } from '../user.context'
-import { getMe, getPosts } from '../services/user.api'
+import { getPosts } from '../services/user.api'
+import { AuthContext } from '../../auth/auth.context'
 
 const useUser = () => {
-    const { user, setUser, loading, setLoading , userPostList , setUserPostList } = useContext(UserContext)
-
-    const handleGetMe = async () => {
-        const response = await getMe();
-        setUser(response.user)
-    }
+    const { profileUser, setProfileUserUser, loading, setLoading , userPostList , setUserPostList } = useContext(UserContext)
+    const {user,setUser} = useContext(AuthContext)
 
     const handleGetPosts = async (userId) =>{
         const response = await getPosts(userId);
         setUserPostList(response.posts)
     }
 
-    useEffect(() => {
-        handleGetMe()
-    },[])
-
     useEffect(()=>{
-        if(!(user._id === undefined))
         handleGetPosts(user._id)
     },[user])
 
     return (
-        { user, loading, handleGetMe , userPostList }
+        { user, loading , userPostList }
     )
 }
 
