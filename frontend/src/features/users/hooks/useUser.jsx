@@ -1,10 +1,10 @@
 import React, { useContext , useEffect } from 'react'
 import { UserContext } from '../user.context'
-import { getPosts } from '../services/user.api'
+import { getPosts, getUserProfile } from '../services/user.api'
 import { AuthContext } from '../../auth/auth.context'
 
 const useUser = () => {
-    const { profileUser, setProfileUserUser, loading, setLoading , userPostList , setUserPostList } = useContext(UserContext)
+    const { userProfile, setUserProfile, loading, setLoading , userPostList , setUserPostList } = useContext(UserContext)
     const {user,setUser} = useContext(AuthContext)
 
     const handleGetPosts = async (userId) =>{
@@ -12,12 +12,19 @@ const useUser = () => {
         setUserPostList(response.posts)
     }
 
+    const handleGetUserProfile = async (userId) =>{
+        setLoading(true)
+        const response = await getUserProfile("6a1923395e0daf8e5355fd9c")
+        setUserProfile(response.userProfile)
+        setLoading(false)
+    }
+
     useEffect(()=>{
-        handleGetPosts(user._id)
-    },[user])
+        handleGetUserProfile();
+    },[])
 
     return (
-        { user, loading , userPostList }
+        { userProfile, loading , userPostList }
     )
 }
 

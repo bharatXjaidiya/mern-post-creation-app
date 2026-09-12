@@ -5,9 +5,14 @@ const api = axios.create({
     withCredentials : true
 })
 
+export const getUserProfile = async(userId) =>{
+    
+    const response = await api.get("/api/user/" + userId);
+
+    return response.data;
+}
 
 export const getPosts = async (userId) =>{
     const response = await api.get("/api/post/getPosts/" + userId);
     return response.data;
 }
-

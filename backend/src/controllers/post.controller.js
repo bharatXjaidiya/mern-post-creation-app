@@ -188,7 +188,7 @@ const getAllCommentsController = async(req,res)=>{
 
     const allComments = await commentModel.find({ postId }).populate("userId");
 
-    res.status(201).json({message : "All comments fetched successfully" , allComments});
+    res.status(200).json({message : "All comments fetched successfully" , allComments});
 }
 
 const deleteCommentController = async (req, res) => {

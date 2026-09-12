@@ -5,24 +5,28 @@ import { useNavigate } from "react-router"
 import "../styles/profile.scss";
 import PostCard from "../../posts/components/PostCard";
 const Profile = () => {
-  const { user, loading, handleGetMe, userPostList } = useUser();
+  const { userProfile, loading, handleGetMe, userPostList } = useUser();
   const navigate = useNavigate();
+  console.log(userProfile)
+  
+  if((userProfile === null) || loading){
+    return <h1>Fetching User...</h1>
+  }
 
-  console.log(userPostList)
   return (
     <main id='Profile'>
 
       <section className="section-1">
-        <div style={{ backgroundImage: `url(${user.banner})` }} className="banner">
+        <div style={{ backgroundImage: `url(${userProfile.banner})` }} className="banner">
           <div onClick={() => { navigate("/") }} className="back-button">
             <FaArrowLeft className='back-button-img' />
           </div>
         </div>
 
         <div className="pic-name">
-          <img src={user.profilePic} alt="" />
-          <p>{user.name}</p>
-          <p className="bio">{user.bio}</p>
+          <img src={userProfile.profilePic} alt="" />
+          <p>{userProfile.name}</p>
+          <p className="bio">{userProfile.bio}</p>
         </div>
       </section>
 
@@ -43,9 +47,9 @@ const Profile = () => {
         </div>
       </section>
 
-      <section className="section-3">
+      {userProfile.isOwner ? <section className="section-3"><button>Edit</button></section> : <section className="section-3">
         <button>Follow</button>
-      </section>
+      </section> } 
 
       <section className="section-4">
         <div className="section-4-top">

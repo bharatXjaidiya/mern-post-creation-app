@@ -7,6 +7,7 @@ import { AuthContext } from "../../auth/auth.context"
 const usePost = () => {
     const { loading, setLoading, allUserList, setAllUserList, allPostList, setAllPostList } = useContext(PostContext)
     const { user, setUser } = useContext(AuthContext)
+    console.log(allPostList)
 
     const handleGetAllUsers = async () => {
         setLoading(true)

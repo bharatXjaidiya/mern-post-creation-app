@@ -2,6 +2,22 @@ const postModel = require("../models/post.model")
 const userModel = require("../models/user.model")
 const followModel = require("../models/follow.model")
 
+const getUserProfileController = async (req,res) =>{
+    const userId = req.params.userId;
+    const loginUserId = req.userId;
+
+    const isOwner = userId === loginUserId;
+    const userProfile = await userModel.findById(userId).lean();
+
+    
+    if(!userProfile){
+        return res.status(404).json({message : 'User does not exist.'});
+    }
+    
+    userProfile.isOwner = isOwner;
+    res.status(201).json({message : "User profile fetch succesfully.",userProfile})
+}
+
 const followController = async (req, res) => {
 
     try {
@@ -64,4 +80,4 @@ const getAllUsersController = async (req,res) =>{
 
 }
 
-module.exports = { followController, unFollowController ,getAllUsersController}
+module.exports = {getUserProfileController , followController, unFollowController ,getAllUsersController}
