@@ -5,9 +5,11 @@ import { FaRegComment } from "react-icons/fa";
 import { IoShareOutline } from "react-icons/io5";
 import { AiOutlineDelete } from "react-icons/ai";
 import usePostActions from '../hooks/usePostActions';
+import { useNavigate } from 'react-router';
 
 
 const PostCard = ({ postId, imageUrl, user, caption, description, likeCount, commentCount, isLiked }) => {
+  const navigate = useNavigate();
 
   const { handleLikePost, handleGetAllLikes, handleGetAllComments, handleCommentPost, handleDeleteComment } = usePostActions();
   const [Liked, setLiked] = useState(isLiked)
@@ -73,7 +75,7 @@ const PostCard = ({ postId, imageUrl, user, caption, description, likeCount, com
 
       <div className="post-bottom">
         <div className="post-bottom-top">
-          <img src={user.profilePic} alt="" />
+          <img onClick={()=>{navigate(`/profile/${user._id}`)}} src={user.profilePic} alt="" />
           <div className="username">{user.name}</div>
         </div>
         <div className="post-bottom-bottom">

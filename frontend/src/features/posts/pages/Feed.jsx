@@ -14,7 +14,6 @@ const Feed = () => {
     if (loading) {
         return <h1>Feed is Loading....</h1>
     }
-
     return (
         <main id="feed">
             <Navbar profilePic={user.profilePic}/>

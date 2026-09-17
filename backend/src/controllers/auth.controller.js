@@ -25,6 +25,7 @@ async function registerController(req, res) {
     res.status(201).json({
         message: "User registered successfully.",
         user: {
+            _id: user._id,
             name: user.name,
             email: user.email,
             bio: user.bio,
@@ -69,7 +70,7 @@ async function loginController(req, res) {
         maxAge: 7 * 24 * 60 * 60 * 1000  // 7 days in milliseconds
     });
 
-    res.status(200).json({ message: "user logdin successfully", user: { name: isExist.name, email: isExist.email, bio: isExist.bio, profilePic: isExist.profilePic , banner : isExist.banner} });
+    res.status(200).json({ message: "user logdin successfully", user: { _id: isExist._id, name: isExist.name, email: isExist.email, bio: isExist.bio, profilePic: isExist.profilePic , banner : isExist.banner} });
 }
 
 const getMeController = async (req, res) => {

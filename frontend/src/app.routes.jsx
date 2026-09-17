@@ -24,7 +24,7 @@ export const router = createBrowserRouter([
         element : <CreatePost />
     },
     {
-        path :"/profile",
+        path :"/profile/:userId",
         element : <Profile />
     }
 ])

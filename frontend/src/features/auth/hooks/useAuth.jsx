@@ -21,6 +21,7 @@ const useAuth = () => {
         const response = await login(username,email,password);
 
         setUser(response.user);
+        
 
         setLoading(false);
 

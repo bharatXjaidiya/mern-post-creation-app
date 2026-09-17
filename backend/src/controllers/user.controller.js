@@ -2,20 +2,15 @@ const postModel = require("../models/post.model")
 const userModel = require("../models/user.model")
 const followModel = require("../models/follow.model")
 
-const getUserProfileController = async (req,res) =>{
+const getUserProfileController = async (req, res) => {
     const userId = req.params.userId;
-    const loginUserId = req.userId;
-
-    const isOwner = userId === loginUserId;
     const userProfile = await userModel.findById(userId).lean();
 
-    
-    if(!userProfile){
-        return res.status(404).json({message : 'User does not exist.'});
+
+    if (!userProfile) {
+        return res.status(404).json({ message: 'User does not exist.' });
     }
-    
-    userProfile.isOwner = isOwner;
-    res.status(201).json({message : "User profile fetch succesfully.",userProfile})
+    res.status(201).json({ message: "User profile fetch succesfully.", userProfile })
 }
 
 const followController = async (req, res) => {
@@ -64,6 +59,7 @@ const unFollowController = async (req, res) => {
     }
 
     const followRecord = await followModel.findOne({ followerId, followeeId })
+    console.log(followeeId,followerId)
 
     if (!followRecord) {
         return res.status(400).json({ message: "You are not following " + followee.name })
@@ -74,10 +70,26 @@ const unFollowController = async (req, res) => {
     res.status(200).json({ message: "Successfully unfollowed " + followee.name })
 }
 
-const getAllUsersController = async (req,res) =>{
+const getAllUsersController = async (req, res) => {
     const allUsers = await userModel.find().select("-password");
-    res.status(201).json({message : "All users fetched successfully" , users : allUsers})
+    res.status(201).json({ message: "All users fetched successfully", users: allUsers })
 
 }
 
-module.exports = {getUserProfileController , followController, unFollowController ,getAllUsersController}
+const getFollowListController = async (req, res) => {
+    const userId = req.params.userId;
+
+    const followList = await followModel.find({
+        $or: [{ followeeId: userId }, { followerId: userId }]
+    }).populate("followerId").populate("followeeId");
+
+    if(followList.length <= 0){
+        return res.status(404).json({message : "user doesn't follow someone and no one follow him/her"})
+    }
+
+    res.status(200).json({message : "followList fetched successfully." , followList})
+
+
+}
+
+module.exports = { getUserProfileController, followController, unFollowController, getAllUsersController , getFollowListController }
