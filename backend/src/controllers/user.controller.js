@@ -1,6 +1,8 @@
 const postModel = require("../models/post.model")
 const userModel = require("../models/user.model")
 const followModel = require("../models/follow.model")
+const imageKit = require("../config/imagekit")
+
 
 const getUserProfileController = async (req, res) => {
     const userId = req.params.userId;
@@ -59,7 +61,7 @@ const unFollowController = async (req, res) => {
     }
 
     const followRecord = await followModel.findOne({ followerId, followeeId })
-    console.log(followeeId,followerId)
+    console.log(followeeId, followerId)
 
     if (!followRecord) {
         return res.status(400).json({ message: "You are not following " + followee.name })
@@ -83,13 +85,67 @@ const getFollowListController = async (req, res) => {
         $or: [{ followeeId: userId }, { followerId: userId }]
     }).populate("followerId").populate("followeeId");
 
-    if(followList.length <= 0){
-        return res.status(404).json({message : "user doesn't follow someone and no one follow him/her"})
+    if (followList.length <= 0) {
+        return res.status(404).json({ message: "user doesn't follow someone and no one follow him/her" })
     }
 
-    res.status(200).json({message : "followList fetched successfully." , followList})
+    res.status(200).json({ message: "followList fetched successfully.", followList })
 
 
 }
 
-module.exports = { getUserProfileController, followController, unFollowController, getAllUsersController , getFollowListController }
+const editController = async (req, res) => {
+    const userId = req.params.userId;
+
+    const user = await userModel.findById(userId)
+
+    if (!user) {
+        return res.status(404).json({ message: "User doesn't Exists." })
+    }
+
+    const {name,bio} = req.body;
+    const updateData = {};
+
+    if(name) updateData.name = name;
+    if(bio) updateData.bio = bio;
+
+    if(req.files?.profilePic?.[0]){
+        if(user.profilePicFileId){
+            await imageKit.deleteFile(user.profilePicField);
+        }
+        const uploaded = await imageKit.upload({
+            file : req.files.profilePic[0].buffer.toString("base64"),
+            fileName : `profile_${userId}_${Date.now()}`,
+            folder : "/profile-pics"
+        })
+
+        updateData.profilePic = uploaded.url;
+        updateData.profilePicFileId = uploaded.fileId;
+        
+    }
+
+    if(req.files?.banner?.[0]){
+        if(user.bannerFileId){
+            await imageKit.deleteFile(user.bannerFileId)
+        }
+
+        const uploaded = await imageKit.upload({
+            file : req.files.banner[0].buffer.toString("base64"),
+            fileName : `banner_${userId}_${Date.now()}`,
+            folder : "/banners"
+        })
+
+        updateData.banner = uploaded.url;
+        updateData.bannerFileId = uploaded.fileId;
+    }
+
+    const updatedUser = await userModel.findByIdAndUpdate(userId,
+        {$set : updateData},
+        {returnDocument: "after" , runValidators : true}
+    );
+
+    res.status(200).json({message : "Profile updated",updatedUser});
+
+}
+
+module.exports = { getUserProfileController, followController, unFollowController, getAllUsersController, getFollowListController , editController}

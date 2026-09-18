@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react'
 import { UserContext } from '../user.context'
-import { getUserPosts, getUserProfile, getFollowList, follow, unfollow } from '../services/user.api'
+import { getUserPosts, getUserProfile, getFollowList, follow, unfollow ,saveEdit } from '../services/user.api'
 import { useParams } from 'react-router'
 import { AuthContext } from '../../auth/auth.context'
 
@@ -82,6 +82,13 @@ const useUser = () => {
         setLoading(false)
     }
 
+    const handleSaveEdit = async (userId,data) =>{
+        setLoading(true);
+        const response = await saveEdit(userId,data);
+        setUserProfile(response.user)
+        setLoading(false)
+    }
+
 
     useEffect(() => {
         handleGetFollowList(userId);
@@ -91,7 +98,7 @@ const useUser = () => {
     }, [])
 
     return (
-        { userProfile, loading, userPostList, handleGetFollowList, followList, setFollowList, handleFollow, handleUnfollow, followers, followings, isFollowed, setIsFollowed }
+        { userProfile , setUserProfile, loading, userPostList, handleGetFollowList, followList, setFollowList, handleFollow, handleUnfollow, followers, followings, isFollowed, setIsFollowed ,handleSaveEdit }
     )
 }
 

@@ -34,3 +34,15 @@ export const unfollow = async (followeeId) => {
 
     return response.data;
 }
+
+export const saveEdit = async (userId,data) =>{
+    const d = new FormData();
+    d.append("name", data.name);
+    d.append("bio", data.bio);
+    if (data.profilePic) d.append("profilePic", data.profilePic);
+    if (data.banner) d.append("banner", data.banner);
+
+    const response = await api.patch("/api/user/edit/" + userId,data);
+
+    return response.data;
+}

@@ -1,16 +1,9 @@
 const postModel = require("../models/post.model")
 const likeModel = require("../models/like.model")
 const jwt = require("jsonwebtoken");
-const ImageKit = require("imagekit");
 const commentModel = require("../models/comment.model");
 const { getAllLikes } = require("../../../frontend/src/features/posts/services/post.api");
-
-
-const imageKit = new ImageKit({
-    publicKey: process.env.IMAGEKIT_PUBLIC_KEY,
-    privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
-    urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT
-})
+const imageKit = require("../config/imagekit")
 
 const createPostController = async (req, res) => {
 
@@ -58,7 +51,7 @@ const createPostController = async (req, res) => {
 const getAllPostsController = async (req, res) => {
     const userId = req.userId;
 
-    const posts = await Promise.all((await postModel.find().populate("userId").sort({createdAt : -1}).lean()).map(async (post) => {
+    const posts = await Promise.all((await postModel.find().populate("userId").sort({ createdAt: -1 }).lean()).map(async (post) => {
         const isLiked = await likeModel.findOne({
             postId: post._id,
             userId
@@ -67,10 +60,10 @@ const getAllPostsController = async (req, res) => {
         post.isLiked = !!isLiked;
         return post
     }));
-    
+
     res.status(200).json({ message: "All posts fetched successfully.", posts })
 }
- 
+
 const getPostController = async (req, res) => {
     const userId = req.params.userId;
     const posts = await postModel.find({ userId }).populate("userId")
@@ -130,7 +123,7 @@ const likePostController = async (req, res) => {
 
 }
 
-const getAllLikesController = async (req,res) => {
+const getAllLikesController = async (req, res) => {
 
     const postId = req.params.postId;
 
@@ -144,7 +137,7 @@ const getAllLikesController = async (req,res) => {
 
     const allLikes = await likeModel.find({ postId }).populate("userId");
 
-    res.status(200).json({message : "All likes list fetched successfully" , allLikes})
+    res.status(200).json({ message: "All likes list fetched successfully", allLikes })
 
 
 }
@@ -175,20 +168,20 @@ const commentPostController = async (req, res) => {
     res.status(201).json({ message: "comment on post successfully", comment: result })
 }
 
-const getAllCommentsController = async(req,res)=>{
+const getAllCommentsController = async (req, res) => {
     const postId = req.params.postId;
 
     const post = await postModel.findById(postId);
 
     console.log(post)
-   
-    if(!post) {
-        return res.status(404).json({message : "Post doesn't exist."})
+
+    if (!post) {
+        return res.status(404).json({ message: "Post doesn't exist." })
     }
 
     const allComments = await commentModel.find({ postId }).populate("userId");
 
-    res.status(200).json({message : "All comments fetched successfully" , allComments});
+    res.status(200).json({ message: "All comments fetched successfully", allComments });
 }
 
 const deleteCommentController = async (req, res) => {
@@ -263,4 +256,4 @@ const deletePostController = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 }
-module.exports = { createPostController, getAllPostsController, getPostController, getPostDetailController, likePostController, commentPostController, deletePostController ,getAllLikesController , getAllCommentsController ,deleteCommentController}
+module.exports = { createPostController, getAllPostsController, getPostController, getPostDetailController, likePostController, commentPostController, deletePostController, getAllLikesController, getAllCommentsController, deleteCommentController }

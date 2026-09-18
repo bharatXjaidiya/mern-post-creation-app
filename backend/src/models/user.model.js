@@ -6,7 +6,9 @@ const userSchema = new mongoose.Schema({
     password: { type: String, required: true , select :false},
     bio: { type: String, default: "user bio's" },
     profilePic: { type: String, default: "https://xsgames.co/randomusers/assets/images/favicon.png" },
-    banner : {type : String , default : "https://unsplash.com/photos/white-clouds-CAMwIxYk5Xg"}
+    banner : {type : String , default : "https://unsplash.com/photos/white-clouds-CAMwIxYk5Xg"},
+    profilePicFileId : {type:String,required : true},
+    bannerFileId : {type:String,required : true}
 });
 
 const userModel = mongoose.model("users", userSchema);

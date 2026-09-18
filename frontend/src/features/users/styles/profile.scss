@@ -16,10 +16,13 @@
             width: 100%;
             height: 100px;
             background-size: cover;
-            background-color: red;
             position: relative;
             padding: 5px;
-            background-position: bottom;
+            background-position: center;
+
+            .back-button {
+                display: inline;
+            }
 
             .back-button-img {
                 background-color: $secondary-color;
@@ -58,9 +61,84 @@
                 font-size: 20px;
                 font-weight: 500;
             }
-            .bio{
+
+            .bio {
                 font-size: 12px;
                 font-weight: 300;
+            }
+        }
+
+        .edit-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+
+            &-banner {
+            width: 100%;
+            height: 100px;
+            background-size: cover;
+            position: relative;
+            padding: 5px;
+            background-position: center;
+            }
+
+            &-profile-pic {
+                position: relative;
+                 width: 70px;
+                height: 70px;
+                border-radius: 50%;
+                background-size: cover;
+                background-position: center;
+                border: 3px solid #fff;
+                margin: -45px auto 0; // pulls it up to overlap the banner
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .edit-overlay {
+                background: rgba(0, 0, 0, 0.5);
+                color: white;
+                font-size: 12px;
+                padding: 4px 8px;
+                border-radius: 6px;
+                opacity: 0;
+                transition: opacity 0.2s ease;
+            }
+
+            &-banner:hover .edit-overlay,
+            &-profile-pic:hover .edit-overlay {
+                opacity: 1;
+            }
+
+            &-name,
+            &-bio {
+                padding: 10px 12px;
+                border-radius: 8px;
+                border: 1px solid #444;
+                background: #1a1a1a;
+                color: white;
+                font-size: 14px;
+
+                &::placeholder {
+                    color: #888;
+                }
+            }
+
+            &-buttons{
+                display:flex;
+                justify-content: center;
+                gap: 5px;
+                margin-bottom: 10px;
+
+                button{
+                    padding: 7px 15px;
+                    border: none;
+                    background-color: $accent-color;
+                    border-radius: 20px;
+
+                }
             }
         }
     }
@@ -68,6 +146,7 @@
     .section-2 {
         display: flex;
         justify-content: space-around;
+        padding-bottom: 10px;
 
         .section-2-post,
         .section-2-follower,
@@ -83,14 +162,14 @@
         display: flex;
         justify-content: center;
 
-        button{
+        button {
             padding: 10px 30px;
             border-radius: 30px;
             background-color: $accent-color;
             border: none;
             font-weight: 400;
             cursor: pointer;
-                transition: all 0.1s ease-in;
+            transition: all 0.1s ease-in;
         }
     }
 
@@ -117,7 +196,7 @@
             height: 50vh;
 
 
-            .followers-component{
+            .followers-component {
                 display: flex;
                 justify-content: space-between;
                 width: 100%;
@@ -126,11 +205,12 @@
                 border-radius: 40px;
                 padding: 0px 10px;
 
-                img{
+                img {
                     width: 50px;
                 }
             }
-            .followings-component{
+
+            .followings-component {
                 display: flex;
                 justify-content: space-between;
                 width: 100%;
@@ -139,10 +219,11 @@
                 border-radius: 40px;
                 padding: 0px 10px;
 
-                img{
+                img {
                     width: 50px;
                 }
-                button{
+
+                button {
                     padding: 3px 6px;
                     background-color: $accent-color;
                     border: none;
