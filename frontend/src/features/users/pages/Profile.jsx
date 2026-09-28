@@ -8,22 +8,24 @@ import { AuthContext } from '../../auth/auth.context';
 import { saveEdit, unfollow } from '../services/user.api';
 
 const Profile = () => {
+  
   const { userProfile, loading, handleGetMe, userPostList, handleGetFollowList, followList, handleFollow, handleUnfollow, followers, followings, isFollowed, setIsFollowed, setFollowList, handleSaveEdit , setUserProfile } = useUser();
+
   const navigate = useNavigate();
   const { userId } = useParams();
   const { user } = useContext(AuthContext);
   const isProfileOwner = userId === user._id;
   const [show, setShow] = useState("posts")
   const [isEditing, setIsEditing] = useState(false);
-
+  
   const [formData, setFormData] = useState({
     name: user.name,
     bio: user.bio,
     profilePic: null,   // File object, only set if user picks a new one
     banner: null
   });
-
-
+  
+  
   const follow = async (userId) => {
     const response = await handleFollow(userId);
   }
@@ -31,15 +33,14 @@ const Profile = () => {
     const response = await handleUnfollow(userId);
   }
   const handleSave = async (userId) => {
-    const response = await handleSaveEdit(userId, formData); // your API call
-
-    setUserProfile(response.updatedUser); // or response.data.updatedUser
+    await handleSaveEdit(userId, formData);
+    setIsEditing(false)
   }
-
-  if ((userProfile === null) || loading) {
+  
+  if ((userProfile === null) || (userProfile === undefined) || loading) {
     return <h1>Fetching User...</h1>
   }
-
+  
   return (
     <main id='Profile'>
       <section className='section-1' >

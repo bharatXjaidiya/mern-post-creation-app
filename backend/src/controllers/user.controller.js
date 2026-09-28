@@ -111,7 +111,7 @@ const editController = async (req, res) => {
 
     if(req.files?.profilePic?.[0]){
         if(user.profilePicFileId){
-            await imageKit.deleteFile(user.profilePicField);
+            await imageKit.deleteFile(user.profilePicFileId);
         }
         const uploaded = await imageKit.upload({
             file : req.files.profilePic[0].buffer.toString("base64"),

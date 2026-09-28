@@ -42,7 +42,7 @@ export const saveEdit = async (userId,data) =>{
     if (data.profilePic) d.append("profilePic", data.profilePic);
     if (data.banner) d.append("banner", data.banner);
 
-    const response = await api.patch("/api/user/edit/" + userId,data);
+    const response = await api.patch("/api/user/edit/" + userId,d);
 
     return response.data;
 }

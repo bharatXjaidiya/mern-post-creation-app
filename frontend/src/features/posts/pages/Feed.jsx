@@ -10,10 +10,13 @@ import "../styles/feed.scss"
 
 const Feed = () => {
     const { allUserList, allPostList, handleGetAllUsers, handleGetAllPosts, loading, user } = usePost();
-
+    if(!user){
+        return <h1>Please Login First</h1>
+    }
     if (loading) {
         return <h1>Feed is Loading....</h1>
     }
+
     return (
         <main id="feed">
             <Navbar profilePic={user.profilePic}/>

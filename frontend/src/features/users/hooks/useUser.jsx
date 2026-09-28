@@ -85,7 +85,7 @@ const useUser = () => {
     const handleSaveEdit = async (userId,data) =>{
         setLoading(true);
         const response = await saveEdit(userId,data);
-        setUserProfile(response.user)
+        setUserProfile(response.updatedUser)
         setLoading(false)
     }
 
