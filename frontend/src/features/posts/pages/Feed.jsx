@@ -3,15 +3,25 @@ import Navbar from '../components/Navbar'
 import PostCard from '../components/PostCard'
 import Footer from '../components/Footer'
 import usePost from '../hooks/usePost'
-import { getAllUsers } from '../services/user.api'
 import StoryCircle from '../components/StoryCircle'
 import "../styles/feed.scss"
 import Loading from '../../../shared/Loading'
+import useUser from '../../users/hooks/useUser'
 
 
 const Feed = () => {
-    const { allUserList, allPostList, handleGetAllUsers, handleGetAllPosts, loading, user } = usePost();
-    if(!user){
+
+    const { allPostList, handleGetAllPosts, loading, user } = usePost();
+    const {allUserList , handleGetAllUsers} = useUser()
+
+    useEffect(() => {
+        handleGetAllUsers();
+        handleGetAllPosts();
+    }, []);
+
+
+
+    if (!user) {
         return <h1>Please Login First</h1>
     }
     if (loading) {
@@ -20,7 +30,7 @@ const Feed = () => {
 
     return (
         <main id="feed">
-            <Navbar profilePic={user.profilePic}/>
+            <Navbar profilePic={user.profilePic} />
 
             <div className="stories">
                 {allUserList?.length > 0
@@ -34,7 +44,7 @@ const Feed = () => {
                 {
                     allPostList?.length > 0
                         ? allPostList.map((post) => (
-                            <PostCard key={post._id} postId = {post._id} user = {post.userId} imageUrl={post.imageUrl} caption={post.caption} description = {post.description} likeCount = {post.likeCount} commentCount={post.commentCount} isLiked = {post.isLiked} />
+                            <PostCard key={post._id} postId={post._id} user={post.userId} imageUrl={post.imageUrl} caption={post.caption} description={post.description} likeCount={post.likeCount} commentCount={post.commentCount} isLiked={post.isLiked} />
                         ))
                         : <h1>No post available now</h1>
                 }

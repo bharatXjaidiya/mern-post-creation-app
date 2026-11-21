@@ -8,10 +8,23 @@ import { AuthContext } from '../../auth/auth.context';
 import { saveEdit, unfollow } from '../services/user.api';
 import { toast } from 'react-toastify'
 import Loading from '../../../shared/Loading';
+import usePost from '../../posts/hooks/usePost';
 
 const Profile = () => {
 
-  const { userProfile, loading, userPostList, handleGetFollowList, followList, handleFollow, handleUnfollow, followers, followings, isFollowed, setIsFollowed, setFollowList, handleSaveEdit, setUserProfile } = useUser();
+  const { userProfile, loading, userPostList, handleGetFollowList, handleFollow, handleUnfollow, followers, followings, isFollowed, handleSaveEdit, allUserList, handleGetAllUsers, handleGetUserPosts , handleGetUserProfile } = useUser();
+
+  useEffect(() => {
+    handleGetAllUsers()
+  }, [])
+
+  useEffect(() => {
+    handleGetFollowList(userId);
+    handleGetUserProfile(userId);
+    handleGetUserPosts(userId);
+
+  }, [])
+
 
   const navigate = useNavigate();
   const { userId } = useParams();
@@ -68,6 +81,8 @@ const Profile = () => {
   if ((userProfile === null) || (userProfile === undefined) || loading) {
     return <Loading text='Fetching user' />
   }
+
+
 
   return (
     <main id='Profile'>

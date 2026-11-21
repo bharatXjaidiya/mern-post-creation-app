@@ -1,13 +1,22 @@
 import React, { useContext, useEffect } from 'react'
 import { UserContext } from '../user.context'
-import { getUserPosts, getUserProfile, getFollowList, follow, unfollow ,saveEdit } from '../services/user.api'
+import { getUserPosts, getUserProfile, getFollowList, follow, unfollow, saveEdit , getAllUsers } from '../services/user.api'
 import { useParams } from 'react-router'
 import { AuthContext } from '../../auth/auth.context'
 
+
 const useUser = () => {
-    const { userProfile, setUserProfile, loading, setLoading, userPostList, setUserPostList, followList, setFollowList, followers, setFollowers, followings, setFollowings, isFollowed, setIsFollowed } = useContext(UserContext)
+    const { userProfile, setUserProfile, loading, setLoading, userPostList, setUserPostList, followList, setFollowList, followers, setFollowers, followings, setFollowings, isFollowed, setIsFollowed , setAllUserList , allUserList } = useContext(UserContext)
     const { userId } = useParams()
     const { user } = useContext(AuthContext)
+
+    const handleGetAllUsers = async () => {
+        setLoading(true)
+        const response = await getAllUsers();
+        console.log("fetch the users")
+        setAllUserList(response.users)
+        setLoading(false)
+    }
 
     const handleGetUserProfile = async (userId) => {
         setLoading(true)
@@ -72,7 +81,7 @@ const useUser = () => {
         await handleGetFollowList(userId)
         setLoading(false)
         return response.followRecord;
-        
+
     }
 
     const handleUnfollow = async (userId) => {
@@ -82,23 +91,16 @@ const useUser = () => {
         setLoading(false)
     }
 
-    const handleSaveEdit = async (userId,data) =>{
+    const handleSaveEdit = async (userId, data) => {
         setLoading(true);
-        const response = await saveEdit(userId,data);
+        const response = await saveEdit(userId, data);
         setUserProfile(response.updatedUser)
         setLoading(false)
     }
 
 
-    useEffect(() => {
-        handleGetFollowList(userId);
-        handleGetUserProfile(userId);
-        handleGetUserPosts(userId);
-
-    }, [])
-
     return (
-        { userProfile , setUserProfile, loading, userPostList, handleGetFollowList, followList, setFollowList, handleFollow, handleUnfollow, followers, followings, isFollowed, setIsFollowed ,handleSaveEdit }
+        {handleGetFollowList, handleGetUserProfile, handleGetUserPosts , userProfile, setUserProfile, loading, userPostList, followList, setFollowList, handleFollow, handleUnfollow, followers, followings, isFollowed, setIsFollowed, handleSaveEdit , allUserList , handleGetAllUsers }
     )
 }
 

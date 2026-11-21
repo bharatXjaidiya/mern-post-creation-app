@@ -11,9 +11,10 @@ export const UserProvider = ({ children }) => {
     const [followers, setFollowers] = useState(null)
     const [isFollowed, setIsFollowed] = useState(false)
     const [followings, setFollowings] = useState(null)
+    const [allUserList, setAllUserList] = useState([])
 
     return (
-        <UserContext.Provider value={{ userProfile, setUserProfile, loading, setLoading, userPostList, setUserPostList, followList, setFollowList, followers, setFollowers, followings, setFollowings, isFollowed, setIsFollowed }}>
+        <UserContext.Provider value={{allUserList,setAllUserList , userProfile, setUserProfile, loading, setLoading, userPostList, setUserPostList, followList, setFollowList, followers, setFollowers, followings, setFollowings, isFollowed, setIsFollowed }}>
             {children}
         </UserContext.Provider>
     )

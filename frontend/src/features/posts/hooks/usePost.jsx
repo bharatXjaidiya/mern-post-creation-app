@@ -1,6 +1,5 @@
 import { useContext, useEffect } from "react"
 import { PostContext } from "../post.context"
-import { getAllUsers } from "../services/user.api"
 import { createPost, getAllPosts } from "../services/post.api"
 import { AuthContext } from "../../auth/auth.context"
 
@@ -8,20 +7,9 @@ const usePost = () => {
     const { loading, setLoading, allUserList, setAllUserList, allPostList, setAllPostList } = useContext(PostContext)
     const { user, setUser } = useContext(AuthContext)
 
-
-
-    const handleGetAllUsers = async () => {
-        setLoading(true)
-        const response = await getAllUsers();
-
-        setAllUserList(response.users)
-        setLoading(false)
-    }
-
     const handleGetAllPosts = async () => {
         setLoading(true)
         const response = await getAllPosts();
-
         setAllPostList(response.posts)
         setLoading(false)
     }
@@ -33,14 +21,9 @@ const usePost = () => {
         setLoading(false)
     }
 
-    useEffect(() => {
-        handleGetAllUsers();
-        handleGetAllPosts();
-    }, []);
-
 
     return {
-        allUserList, allPostList, handleGetAllUsers, handleGetAllPosts, loading, user, handleCreatePost
+        allUserList, handleGetAllPosts, loading, user, handleCreatePost , allPostList
     }
 }
 
