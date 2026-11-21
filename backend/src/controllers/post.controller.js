@@ -66,7 +66,15 @@ const getAllPostsController = async (req, res) => {
 
 const getPostController = async (req, res) => {
     const userId = req.params.userId;
-    const posts = await postModel.find({ userId }).populate("userId")
+    const posts = await Promise.all((await postModel.find({userId}).populate("userId").sort({ createdAt: -1 }).lean()).map(async (post) => {
+        const isLiked = await likeModel.findOne({
+            postId: post._id,
+            userId
+        })
+
+        post.isLiked = !!isLiked;
+        return post
+    }));
 
     if (posts.length === 0) {
         return res.status(404).json({ message: "No posts created yet." })

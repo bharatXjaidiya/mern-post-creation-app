@@ -10,8 +10,8 @@ import { toast } from 'react-toastify'
 import Loading from '../../../shared/Loading';
 
 const Profile = () => {
-  
-  const { userProfile, loading, handleGetMe, userPostList, handleGetFollowList, followList, handleFollow, handleUnfollow, followers, followings, isFollowed, setIsFollowed, setFollowList, handleSaveEdit , setUserProfile } = useUser();
+
+  const { userProfile, loading, userPostList, handleGetFollowList, followList, handleFollow, handleUnfollow, followers, followings, isFollowed, setIsFollowed, setFollowList, handleSaveEdit, setUserProfile } = useUser();
 
   const navigate = useNavigate();
   const { userId } = useParams();
@@ -19,16 +19,35 @@ const Profile = () => {
   const isProfileOwner = userId === user._id;
   const [show, setShow] = useState("posts")
   const [isEditing, setIsEditing] = useState(false);
-  
-  
+
+
   const [formData, setFormData] = useState({
     name: user.name,
     bio: user.bio,
     profilePic: null,   // File object, only set if user picks a new one
     banner: null
   });
-  
-  
+
+  const bannerPreview = useImagePreview(formData.banner);
+  const profilePicPreview = useImagePreview(formData.profilePic);
+
+  function useImagePreview(file) {
+    const [preview, setPreview] = useState(null);
+
+    useEffect(() => {
+      if (!file) {
+        setPreview(null);
+        return;
+      }
+      const url = URL.createObjectURL(file);
+      setPreview(url);
+      return () => URL.revokeObjectURL(url); // clean up the old URL
+    }, [file]);
+
+    return preview;
+  }
+
+
   const follow = async (userId) => {
     const response = await handleFollow(userId);
   }
@@ -36,20 +55,20 @@ const Profile = () => {
     const response = await handleUnfollow(userId);
   }
   const handleSave = async (userId) => {
-    try{
+    try {
       await handleSaveEdit(userId, formData);
       setIsEditing(false)
       toast.success("User Edited Successfully.")
     }
-    catch(err){
+    catch (err) {
       toast.error(err.response?.data?.message || "Edit failed. Please try again.");
     }
   }
-  
+
   if ((userProfile === null) || (userProfile === undefined) || loading) {
-    return <Loading text='Fetching user' /> 
+    return <Loading text='Fetching user' />
   }
-  
+
   return (
     <main id='Profile'>
       <section className='section-1' >
@@ -58,7 +77,7 @@ const Profile = () => {
 
             <label htmlFor="banner-upload" className='edit-form-banner'
               style={{
-                backgroundImage: `url(${formData.banner ? URL.createObjectURL(formData.banner) : userProfile.banner})`
+                backgroundImage: `url(${bannerPreview || userProfile.banner})`
               }}
             >
 
@@ -74,7 +93,7 @@ const Profile = () => {
 
             <label htmlFor="profilepic-upload" className='edit-form-profile-pic'
               style={{
-                backgroundImage: `url(${formData.profilePic ? URL.createObjectURL(formData.profilePic) : userProfile.profilePic})`
+                backgroundImage: `url(${profilePicPreview || userProfile.profilePic})`
               }}
             >
               <span className="edit-overlay">Change Photo</span>

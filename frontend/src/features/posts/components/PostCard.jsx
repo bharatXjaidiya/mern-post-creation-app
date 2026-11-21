@@ -22,9 +22,11 @@ const PostCard = ({ postId, imageUrl, user, caption, description, likeCount, com
   const [commentList, setCommentList] = useState([])
   const [commentedCount, setCommentedCount] = useState(commentCount)
 
-  // useEffect(() => {
-  //   setLiked(isLiked)
-  // }, [])
+
+
+  useEffect(() => {
+    setLiked(isLiked)
+  }, [])
 
 
   const onLikeHandle = async () => {
