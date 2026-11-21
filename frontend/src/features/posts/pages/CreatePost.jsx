@@ -4,10 +4,13 @@ import upload from "../../../assets/upload-file.jpg"
 import usePost from '../hooks/usePost'
 import { useRef, useState } from 'react'
 import { useNavigate } from 'react-router'
+import { toast } from 'react-toastify'
+import Loading from '../../../shared/Loading'
+
 
 const CreatePost = () => {
 
-  const { handleCreatePost } = usePost();
+  const { handleCreatePost , loading } = usePost();
   const [caption, setCaption] = useState("");
   const [description, setDescription] = useState("");
   const navigate = useNavigate();
@@ -27,9 +30,19 @@ const CreatePost = () => {
 
   async function submitPost(e) {
     e.preventDefault();
-    const image = postImageInputFieldRef.current.files[0];
-    await handleCreatePost(caption, description, image);
-    navigate("/")
+    try{
+      const image = postImageInputFieldRef.current.files[0];
+      await handleCreatePost(caption, description, image);
+      toast("post created successfully.")
+      navigate("/")
+    }
+    catch(err){
+      toast.error(err.response?.data?.message || "register failed. Please try again.");
+    }
+  }
+
+  if(loading){
+    return <Loading text='Loading please wait' />
   }
 
   return (

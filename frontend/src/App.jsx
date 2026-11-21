@@ -5,13 +5,16 @@ import "./shared/global.scss"
 import { AuthProvider } from './features/auth/auth.context'
 import { PostProvider } from './features/posts/post.context'
 import { UserProvider } from './features/users/user.context'
+import { ToastContainer, toast } from 'react-toastify';
 
 const App = () => {
+
   return (
     <AuthProvider>
       <PostProvider>
         <UserProvider>
           <RouterProvider router={router} />
+          <ToastContainer />
         </UserProvider>
       </PostProvider>
     </AuthProvider>

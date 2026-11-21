@@ -5,30 +5,24 @@ import { AuthContext } from "../auth.context";
 const useAuth = () => {
     const { user, setUser, loading, setLoading } = useContext(AuthContext);
 
-    const handleRegister = async(username,email,password)=>{
-        setLoading(true);
+    const handleRegister = async (username, email, password) => {
 
-        const response = await register(username,email,password);
-
+        setLoading(true)
+        const response = await register(username, email, password);
         setUser(response.user);
+        setLoading(false)
 
-        setLoading(false);
     }
 
-    const handleLogin = async(username,email,password) =>{
-        setLoading(true);
-
-        const response = await login(username,email,password);
-
+    const handleLogin = async (username, email, password) => {
+        setLoading(true)
+        const response = await login(username, email, password);
         setUser(response.user);
-        
-
-        setLoading(false);
-
+        setLoading(false)
     }
 
     return {
-        user , loading , handleLogin , handleRegister
+        user, loading, handleLogin, handleRegister
     }
 
 }

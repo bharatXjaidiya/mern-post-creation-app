@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router'
 import "../style/form.scss"
 import useAuth from '../hooks/useAuth'
+import { toast } from 'react-toastify'
+import Loading from '../../../shared/Loading'
+
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -24,13 +27,18 @@ const Register = () => {
 
   const handleSubmit= async(e)=>{
     e.preventDefault();
-    await handleRegister(username,email,password)
-    navigate('/login')
-
+    try{
+      await handleRegister(username,email,password)
+      toast("Registered successfully.")
+      navigate('/login')
+    }
+    catch(err){
+       toast.error(err.response?.data?.message || "register failed. Please try again.");
+    }
   }
 
   if(loading){
-    return <h1>Loading...</h1>
+    return <Loading text='User getting register wait...'  />
   }
 
   return (

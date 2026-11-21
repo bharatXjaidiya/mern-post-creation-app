@@ -6,6 +6,7 @@ import usePost from '../hooks/usePost'
 import { getAllUsers } from '../services/user.api'
 import StoryCircle from '../components/StoryCircle'
 import "../styles/feed.scss"
+import Loading from '../../../shared/Loading'
 
 
 const Feed = () => {
@@ -14,7 +15,7 @@ const Feed = () => {
         return <h1>Please Login First</h1>
     }
     if (loading) {
-        return <h1>Feed is Loading....</h1>
+        return <Loading text='Fetching Feed' ></Loading>
     }
 
     return (

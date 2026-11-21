@@ -47,7 +47,7 @@ async function loginController(req, res) {
     }).select("+password")
 
     if (!isExist) {
-        return res.status(404).json({ message: "User dosn't exist." })
+        return res.status(404).json({ message: "User doesn't exist." })
     }
 
     const hash = isExist.password

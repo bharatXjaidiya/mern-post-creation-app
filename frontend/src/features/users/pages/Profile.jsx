@@ -6,6 +6,8 @@ import "../styles/profile.scss";
 import PostCard from "../../posts/components/PostCard";
 import { AuthContext } from '../../auth/auth.context';
 import { saveEdit, unfollow } from '../services/user.api';
+import { toast } from 'react-toastify'
+import Loading from '../../../shared/Loading';
 
 const Profile = () => {
   
@@ -17,6 +19,7 @@ const Profile = () => {
   const isProfileOwner = userId === user._id;
   const [show, setShow] = useState("posts")
   const [isEditing, setIsEditing] = useState(false);
+  
   
   const [formData, setFormData] = useState({
     name: user.name,
@@ -33,12 +36,18 @@ const Profile = () => {
     const response = await handleUnfollow(userId);
   }
   const handleSave = async (userId) => {
-    await handleSaveEdit(userId, formData);
-    setIsEditing(false)
+    try{
+      await handleSaveEdit(userId, formData);
+      setIsEditing(false)
+      toast.success("User Edited Successfully.")
+    }
+    catch(err){
+      toast.error(err.response?.data?.message || "Edit failed. Please try again.");
+    }
   }
   
   if ((userProfile === null) || (userProfile === undefined) || loading) {
-    return <h1>Fetching User...</h1>
+    return <Loading text='Fetching user' /> 
   }
   
   return (

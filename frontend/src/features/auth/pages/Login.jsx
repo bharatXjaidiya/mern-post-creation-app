@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router'
 import useAuth from "../hooks/useAuth"
+import { toast } from 'react-toastify'
+import Loading from '../../../shared/Loading'
+
 
 const Login = () => {
     const [username, setUsername] = useState("")
@@ -8,6 +11,8 @@ const Login = () => {
     const [password, setPassword] = useState("")
     const [loginWith, setLoginWith] = useState("username")
     const { user, loading, handleLogin } = useAuth();
+
+
     const navigate = useNavigate()
 
     const handleChange = (e) => {
@@ -24,13 +29,18 @@ const Login = () => {
 
     const submit = async (e) => {
         e.preventDefault();
-        await handleLogin(username, email, password);
+        try {
+            await handleLogin(username, email, password);
+            toast("User login successfully.")
+            navigate('/')
+        } catch (err) {
+            toast.error(err.response?.data?.message || "Login failed. Please try again.");
+        }
 
-        navigate('/')
     }
 
     if (loading) {
-        return <h1>Loading...</h1>
+        return <Loading text='User getting Login wait...' />
     }
 
     return (
@@ -51,6 +61,7 @@ const Login = () => {
                 </div>
 
             </form>
+            
         </main>
     )
 }

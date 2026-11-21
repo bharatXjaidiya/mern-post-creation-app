@@ -1,6 +1,7 @@
 import { createContext } from 'react';
 import { useState, useEffect } from 'react';
 import { getMe } from './services/auth.api';
+import Loading from '../../shared/Loading';
 
 export const AuthContext = createContext();
 
@@ -27,7 +28,7 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     if (authLoading) {
-        return <h1>Loading...</h1>;
+        return <Loading text='Fetching user' />
     }
 
     return (
