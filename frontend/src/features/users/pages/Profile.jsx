@@ -5,24 +5,20 @@ import { useNavigate, useParams } from "react-router"
 import "../styles/profile.scss";
 import PostCard from "../../posts/components/PostCard";
 import { AuthContext } from '../../auth/auth.context';
-import { saveEdit, unfollow } from '../services/user.api';
 import { toast } from 'react-toastify'
 import Loading from '../../../shared/Loading';
-import usePost from '../../posts/hooks/usePost';
 
 const Profile = () => {
 
-  const { userProfile, loading, userPostList, handleGetFollowList, handleFollow, handleUnfollow, followers, followings, isFollowed, handleSaveEdit, allUserList, handleGetAllUsers, handleGetUserPosts , handleGetUserProfile } = useUser();
+  const { userProfile, loading, userPostList, handleGetFollowList, handleFollow, handleUnfollow, followers, followings, isFollowed, handleSaveEdit, allUserList, handleGetAllUsers, handleGetUserPosts, handleGetUserProfile } = useUser();
+
+
 
   useEffect(() => {
     handleGetAllUsers()
-  }, [])
-
-  useEffect(() => {
     handleGetFollowList(userId);
     handleGetUserProfile(userId);
     handleGetUserPosts(userId);
-
   }, [])
 
 
@@ -32,6 +28,7 @@ const Profile = () => {
   const isProfileOwner = userId === user._id;
   const [show, setShow] = useState("posts")
   const [isEditing, setIsEditing] = useState(false);
+  const [isAvailable, setIsAvailable] = useState(true)
 
 
   const [formData, setFormData] = useState({
@@ -60,6 +57,26 @@ const Profile = () => {
     return preview;
   }
 
+  const handleEditFormName = (e) => {
+    let name = e.target.value
+    let available = null
+    setFormData({ ...formData, name: name })
+
+    //verify the name logic 
+
+    for (const user of allUserList) {
+      if (user.name !== name) {
+        console.log("hello")
+        available = true
+      }
+      else {
+        available = false;
+        break;
+      }
+    }
+
+    setIsAvailable(available)
+  }
 
   const follow = async (userId) => {
     const response = await handleFollow(userId);
@@ -68,6 +85,7 @@ const Profile = () => {
     const response = await handleUnfollow(userId);
   }
   const handleSave = async (userId) => {
+    if(!isAvailable) return
     try {
       await handleSaveEdit(userId, formData);
       setIsEditing(false)
@@ -121,11 +139,11 @@ const Profile = () => {
               />
             </label>
 
-            <input className='edit-form-name'
+            <input className={`edit-form-name ${isAvailable ? 'available' : 'not-available'}`}
               type="text"
               placeholder="Enter your name"
               value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              onChange={(e) => { handleEditFormName(e) }}
             />
 
             <input className='edit-form-bio'
@@ -204,7 +222,7 @@ const Profile = () => {
                   </p>
 
                 </div>)
-              }) : <h3>No one follow's {user.name}</h3>
+              }) : <h3>No one follow's {userProfile.name}</h3>
             )
           }
           {
@@ -218,7 +236,7 @@ const Profile = () => {
                   <button onClick={() => { unfollow(e._id) }}>Unfollow</button>
                 </div>)
               })
-                : <h3>{user.name} don't follow anyone</h3>
+                : <h3>{userProfile.name} don't follow anyone</h3>
             )
           }
 

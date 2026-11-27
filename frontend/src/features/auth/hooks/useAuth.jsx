@@ -22,7 +22,7 @@ const useAuth = () => {
     }
 
     return {
-        user, loading, handleLogin, handleRegister
+        user, loading, handleLogin, handleRegister , setLoading
     }
 
 }

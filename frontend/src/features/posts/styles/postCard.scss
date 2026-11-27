@@ -222,12 +222,14 @@
             border: 1px solid $accent-color;
             border-radius: 20px;
             align-items: center;
+            padding: 1px;
 
             .comment-component-left {
                 img {
                     width: 40px;
                     height: 40px;
                     object-fit: cover;
+                    border-radius: 50%;
                 }
             }
 

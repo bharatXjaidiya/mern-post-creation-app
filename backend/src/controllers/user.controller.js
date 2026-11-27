@@ -147,5 +147,12 @@ const editController = async (req, res) => {
     res.status(200).json({message : "Profile updated",updatedUser});
 
 }
+ const searchUserController = async(req,res) =>{
+    const {username} = req.params();
 
-module.exports = { getUserProfileController, followController, unFollowController, getAllUsersController, getFollowListController , editController}
+    const result = await userModel.findOne({
+        name : username
+    })
+}
+
+module.exports = { getUserProfileController, followController, unFollowController, getAllUsersController, getFollowListController , editController , searchUserController}

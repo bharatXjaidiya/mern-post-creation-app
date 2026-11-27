@@ -10,7 +10,7 @@ const Login = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [loginWith, setLoginWith] = useState("username")
-    const { user, loading, handleLogin } = useAuth();
+    const { user, loading, handleLogin , setLoading } = useAuth();
 
 
     const navigate = useNavigate()
@@ -35,6 +35,9 @@ const Login = () => {
             navigate('/')
         } catch (err) {
             toast.error(err.response?.data?.message || "Login failed. Please try again.");
+        }
+        finally{
+            setLoading(false)
         }
 
     }

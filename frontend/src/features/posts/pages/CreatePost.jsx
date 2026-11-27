@@ -49,7 +49,10 @@ const CreatePost = () => {
     <main onSubmit={(e) => { submitPost(e) }} className='create-post'>
 
       <div className="create-container">
+        <div className='heading'>
         <h1>Create Post</h1>
+        <button onClick={()=>{navigate("/")}}>X</button>
+        </div>
         <form >
           <label htmlFor='file'> {preview ? <img src={preview} alt="preview" /> : <img src={upload} alt="" />}</label>
           <input onChange={(e) => {

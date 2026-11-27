@@ -21,7 +21,7 @@ const Footer = () => {
         <p>Home</p>
       </div>
 
-      <div className="search">
+      <div onClick={()=>{navigate('/search')}} className="search">
         <GoSearch className='icon' />
         <p>Search</p>
       </div>

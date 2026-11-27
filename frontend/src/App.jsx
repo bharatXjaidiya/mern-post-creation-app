@@ -6,6 +6,7 @@ import { AuthProvider } from './features/auth/auth.context'
 import { PostProvider } from './features/posts/post.context'
 import { UserProvider } from './features/users/user.context'
 import { ToastContainer, toast } from 'react-toastify';
+import { SearchProvider } from './features/search/search.context'
 
 const App = () => {
 
@@ -13,8 +14,10 @@ const App = () => {
     <AuthProvider>
       <PostProvider>
         <UserProvider>
-          <RouterProvider router={router} />
-          <ToastContainer />
+          <SearchProvider>
+            <RouterProvider router={router} />
+            <ToastContainer />
+          </SearchProvider>
         </UserProvider>
       </PostProvider>
     </AuthProvider>

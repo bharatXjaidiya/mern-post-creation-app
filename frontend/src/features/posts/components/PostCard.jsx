@@ -68,8 +68,6 @@ const PostCard = ({ postId, imageUrl, user, caption, description, likeCount, com
     const response = await handleGetAllComments(postId);
     setCommentList(response)
     setCommentedCount(prev => prev - 1)
-
-
   }
 
   return (

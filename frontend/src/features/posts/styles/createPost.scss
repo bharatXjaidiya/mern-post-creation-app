@@ -9,9 +9,24 @@
     flex-direction: column;
     gap: 1rem;
     
-
-    h1{
-        color: $accent-color;
+    .heading{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        h1{
+            color: $accent-color;
+        }
+        button{
+            color: white;
+            background-color: $accent-color;
+            border: none;
+            padding: 5px;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-weight: 700;
+            cursor: pointer;
+        }
     }
 
     form{

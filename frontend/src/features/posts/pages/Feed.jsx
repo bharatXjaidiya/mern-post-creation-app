@@ -7,12 +7,14 @@ import StoryCircle from '../components/StoryCircle'
 import "../styles/feed.scss"
 import Loading from '../../../shared/Loading'
 import useUser from '../../users/hooks/useUser'
+import { useNavigate } from 'react-router'
 
 
 const Feed = () => {
 
     const { allPostList, handleGetAllPosts, loading, user } = usePost();
     const {allUserList , handleGetAllUsers} = useUser()
+    const navigate = useNavigate()
 
     useEffect(() => {
         handleGetAllUsers();
@@ -22,7 +24,14 @@ const Feed = () => {
 
 
     if (!user) {
-        return <h1>Please Login First</h1>
+        setTimeout(() => {
+            return <Loading text='Please Login First' />
+        }, 2000);
+        setTimeout(() => {
+            return <Loading text='Redirecting to Login Page' />
+        }, 2000);
+
+        navigate("/login")
     }
     if (loading) {
         return <Loading text='Fetching Feed' ></Loading>
